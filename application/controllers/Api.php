@@ -56,8 +56,15 @@ class Api extends CI_Controller {
 	}
 
 	public function kegiatan(){
-		$this->input->get('id_user');
-		echo json_encode($this->Mapi->kegiatan(id_user)->result());
+		$id_user = $this->input->get('id_user');
+
+		$perpage = 10;
+		$limit = $perpage*$this->input->get('halaman');
+		$offset = $limit - $perpage;
+
+		//echo "limit ".$limit." offset ".$offset;
+
+		echo json_encode($this->Mapi->kegiatan($id_user, $limit, $offset)->result());
 	}
 
 }
