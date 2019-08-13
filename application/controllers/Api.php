@@ -100,19 +100,6 @@ class Api extends CI_Controller {
 			"id_user"				=> $id_user
 		);
 		if($this->Mapi->kegiatan_insert($data)){
-			for ($i = 1; $i <= $jml_foto ; $i++) { 
-				$nama_foto = $idkegiatan."-".$i.".jpg";
-				$file_foto = $this->input->post('foto'.$i);
-				$path = "files/kegiatan/".$nama_foto;
-				file_put_contents($path, base64_decode($file_foto));
-
-				$data_foto = array(
-					"id_kegiatan"	=> $idkegiatan,
-					"foto"			=> $nama_foto
-				);
-
-				$this->Mapi->foto_insert($data_foto);
-			}
 			$response = array(
 				"code"	=> 1
 			);
@@ -124,6 +111,30 @@ class Api extends CI_Controller {
 
 		echo json_encode($response);
 
+	}
+
+	public function foto_save(){
+		$nama_foto = $idkegiatan."-".$i.".jpg";
+		$file_foto = $this->input->post('foto'.$i);
+		$path = "files/kegiatan/".$nama_foto;
+		file_put_contents($path, base64_decode($file_foto));
+
+		$data_foto = array(
+			"id_kegiatan"	=> $idkegiatan,
+			"foto"			=> $nama_foto
+		);
+
+		if($this->Mapi->foto_insert($data_foto)){
+			$response = array(
+				"code"	=> 1
+			);
+		}else{
+			$response = array(
+				"code"	=> 0
+			);
+		}
+
+		echo json_encode($response);
 	}
 
 	public function hapus_kegiatan(){
